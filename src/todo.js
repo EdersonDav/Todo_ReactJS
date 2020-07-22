@@ -11,11 +11,17 @@ const Todo = () => {
     let newItem = new Item(item)
     setItems([...items, newItem])
   }
+
+  function deleteItem(item) {
+    let filteredItem = items.filter(itemFilter => itemFilter.id !== item.id)
+    setItems(filteredItem)
+    console.log(items);
+  }
   return (
     <div className="container">
       <h1>Todo</h1>
       <Form onAddItem={onAddItem} />
-      <List items={items} />
+      <List deleteItem={deleteItem} items={items} />
     </div>
   )
 }
