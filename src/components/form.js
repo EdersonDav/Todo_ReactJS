@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Card from './card'
 
 const Form = (props) => {
   const [text, setText] = useState("")
@@ -18,8 +19,10 @@ const Form = (props) => {
 
   return (
     <form >
-      <input onChange={handleTextInput} value={text} type="text" />
-      <button onClick={addTodo}>Add</button>
+      <Card>
+        <input onChange={handleTextInput} value={text} type="text" />
+        <button onClick={addTodo} className="btnAdd">Add</button>
+      </Card>
     </form>
   )
 }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import Item from './item'
+import Item from './components/item'
 import './todo.css'
-import List from './list'
-import Form from './form'
+import List from './components/list'
+import Form from './components/form'
 
 const Todo = () => {
   const [items, setItems] = useState([])
@@ -13,15 +13,30 @@ const Todo = () => {
   }
 
   function deleteItem(item) {
-    let filteredItem = items.filter(itemFilter => itemFilter.id !== item.id)
-    setItems(filteredItem)
-    console.log(items);
+    let filteredItems = items.filter(itemFilter => itemFilter.id !== item.id)
+    setItems(filteredItems)
   }
+
+  function checked(item) {
+    let itemsCheck = items.map(itemCheck => {
+      if (itemCheck.id === item.id) {
+        itemCheck.done = !itemCheck.done
+      }
+      return itemCheck
+    })
+    setItems(itemsCheck)
+    console.log(item);
+  }
+
   return (
     <div className="container">
       <h1>Todo</h1>
       <Form onAddItem={onAddItem} />
-      <List deleteItem={deleteItem} items={items} />
+      <List
+        deleteItem={deleteItem}
+        checked={checked}
+        items={items}
+      />
     </div>
   )
 }
