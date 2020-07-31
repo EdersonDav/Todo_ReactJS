@@ -1,56 +1,40 @@
-import React, { useState, useEffect } from 'react'
-import Item from './components/item'
+import React from 'react'
 import './todo.css'
 import List from './components/list'
 import Form from './components/form'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import listReducer from './reducers/listReducer'
 
 const TodoItemsLocalStorage = "items_todo"
 
+const persisteStates = (state) => {
+  localStorage.setItem(TodoItemsLocalStorage, JSON.stringify(state))
+}
+
+const loadingTodo = () => {
+  const itemActual = localStorage.getItem(TodoItemsLocalStorage)
+  if (itemActual) {
+    return JSON.parse(itemActual)
+  } else {
+    return []
+  }
+}
+const store = createStore(listReducer, loadingTodo())
+
+store.subscribe(() => {
+  persisteStates(store.getState())
+})
+
 const Todo = () => {
-  const [items, setItems] = useState([])
-
-  useEffect(() => {
-    let itemsTodo = localStorage.getItem(TodoItemsLocalStorage)
-    if (itemsTodo) {
-      setItems(JSON.parse(itemsTodo))
-    }
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem(TodoItemsLocalStorage, JSON.stringify(items))
-  }, [items])
-
-  function onAddItem(item) {
-
-    let newItem = new Item(item)
-    setItems([...items, newItem])
-  }
-
-  function deleteItem(item) {
-    let filteredItems = items.filter(itemFilter => itemFilter.id !== item.id)
-    setItems(filteredItems)
-  }
-
-  function checked(item) {
-    let itemsCheck = items.map(itemCheck => {
-      if (itemCheck.id === item.id) {
-        itemCheck.done = !itemCheck.done
-      }
-      return itemCheck
-    })
-    setItems(itemsCheck)
-    console.log(item);
-  }
-
   return (
     <div className="container">
-      <h1>Todo</h1>
-      <Form onAddItem={onAddItem} />
-      <List
-        deleteItem={deleteItem}
-        checked={checked}
-        items={items}
-      />
+      <Provider store={store}>
+        <h1>Todo</h1>
+        <Form />
+        <List
+        />
+      </Provider>
     </div>
   )
 }

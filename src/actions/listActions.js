@@ -2,7 +2,7 @@ import Item from '../components/item'
 
 function addItem(item) {
   let newItem = new Item(item)
-  return { type: "ADD_ITEM", payload: item }
+  return { type: "ADD_ITEM", payload: newItem }
 }
 
 function deleteItem(id) {

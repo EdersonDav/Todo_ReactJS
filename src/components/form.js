@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import Card from './card'
+import { addItem } from '../actions/listActions'
+import { useDispatch } from 'react-redux'
 
 const Form = (props) => {
   const [text, setText] = useState("")
+  const dispatch = useDispatch()
 
   function handleTextInput(event) {
     let txt = event.target.value;
@@ -12,7 +15,7 @@ const Form = (props) => {
   function addTodo(event) {
     event.preventDefault()
     if (text) {
-      props.onAddItem(text)
+      dispatch(addItem(text))
       setText("")
     }
   }
